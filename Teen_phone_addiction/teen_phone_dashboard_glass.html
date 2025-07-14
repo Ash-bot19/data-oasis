@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teen Phone Addiction Dashboard</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
+      background: linear-gradient(145deg, #e0f7fa, #b2ebf2);
+    }
+
+    h1 {
+      color: #004d40;
+      text-align: center;
+      text-shadow: 1px 1px 2px #ffffffaa;
+    }
+
+    input, select {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    #filter {
+      display: none;
+      margin: 0 auto 20px auto;
+      text-align: center;
+    }
+
+    #charts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    #charts > div {
+      flex: 1 1 40%;
+      min-width: 300px;
+      max-width: 800px;
+      padding: 20px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📊 Teen Phone Usage Dashboard</h1>
+
+  <div style="text-align: center;">
+    <input type="file" id="fileInput" accept=".json" />
+  </div>
+
+  <div id="filter">
+    <label for="gradeSelect"><strong>Filter by School Grade:</strong></label>
+    <select id="gradeSelect"></select>
+  </div>
+
+  <div id="charts">
+    <div id="chart1"></div>
+    <div id="chart2"></div>
+    <div id="chart3"></div>
+    <div id="chart4"></div>
+    <div id="chart5"></div>
+  </div>
+
+<script>
+  let rawData = [];
+
+  document.getElementById('fileInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        rawData = JSON.parse(e.target.result);
+        const grades = [...new Set(rawData.map(d => d.School_Grade))];
+        const gradeSelect = document.getElementById('gradeSelect');
+        gradeSelect.innerHTML = '<option value="All">All</option>' + grades.map(g => `<option value="${g}">${g}</option>`).join('');
+        document.getElementById('filter').style.display = 'block';
+        renderCharts(rawData);
+      } catch (err) {
+        alert('Invalid JSON format');
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  document.getElementById('gradeSelect').addEventListener('change', function() {
+    const selectedGrade = this.value;
+    const filteredData = selectedGrade === 'All' ? rawData : rawData.filter(d => d.School_Grade === selectedGrade);
+    renderCharts(filteredData);
+  });
+
+  function renderCharts(data) {
+    if (data.length === 0) return;
+
+    // Chart 1: Daily Usage vs Academic Performance
+    Plotly.newPlot('chart1', [{
+      x: data.map(d => d.Daily_Usage_Hours),
+      y: data.map(d => d.Academic_Performance),
+      text: data.map(d => d.Name),
+      mode: 'markers',
+      type: 'scatter',
+      marker: { size: 10, color: data.map(d => d.Addiction_Level) }
+    }], {
+      title: 'Daily Usage Hours vs Academic Performance',
+      xaxis: { title: 'Daily Usage Hours' },
+      yaxis: { title: 'Academic Performance (%)' }
+    });
+
+    // Chart 2: Addiction Level by Age and Gender
+    const ages = [...new Set(data.map(d => d.Age))].sort((a, b) => a - b);
+    const genders = [...new Set(data.map(d => d.Gender))];
+    const traces = genders.map(gender => ({
+      name: gender,
+      type: 'bar',
+      x: ages,
+      y: ages.map(age => {
+        const filtered = data.filter(d => d.Age === age && d.Gender === gender);
+        return filtered.length ? filtered.reduce((sum, d) => sum + d.Addiction_Level, 0) / filtered.length : 0;
+      })
+    }));
+    Plotly.newPlot('chart2', traces, {
+      title: 'Addiction Level by Age and Gender',
+      xaxis: { title: 'Age' },
+      yaxis: { title: 'Avg Addiction Level' },
+      barmode: 'group'
+    });
+
+    // Chart 3: Usage Purpose Distribution
+    const purposes = [...new Set(data.map(d => d.Phone_Usage_Purpose))];
+    const purposeCounts = purposes.map(p => data.filter(d => d.Phone_Usage_Purpose === p).length);
+    Plotly.newPlot('chart3', [{
+      labels: purposes,
+      values: purposeCounts,
+      type: 'pie'
+    }], {
+      title: 'Phone Usage Purpose Distribution'
+    });
+
+    // Chart 4: Time Allocation (Stacked Bar)
+    const names = data.map(d => d.Name);
+    Plotly.newPlot('chart4', [
+      {
+        name: 'Social Media',
+        type: 'bar',
+        x: names,
+        y: data.map(d => d.Time_on_Social_Media)
+      },
+      {
+        name: 'Gaming',
+        type: 'bar',
+        x: names,
+        y: data.map(d => d.Time_on_Gaming)
+      },
+      {
+        name: 'Education',
+        type: 'bar',
+        x: names,
+        y: data.map(d => d.Time_on_Education)
+      }
+    ], {
+      title: 'Time Allocation per Activity',
+      barmode: 'stack',
+      xaxis: { title: 'Student Name' },
+      yaxis: { title: 'Hours per Day' }
+    });
+
+    // Chart 5: Radar Chart for Mental Health Indicators
+    const categories = ['Anxiety_Level', 'Depression_Level', 'Self_Esteem', 'Sleep_Hours', 'Daily_Usage_Hours'];
+    const radarData = data.map(d => ({
+      type: 'scatterpolar',
+      r: categories.map(c => d[c]),
+      theta: categories.map(c => c.replace(/_/g, ' ')),
+      fill: 'toself',
+      name: d.Name
+    }));
+    Plotly.newPlot('chart5', radarData, {
+      title: 'Mental Health Indicators Radar',
+      polar: { radialaxis: { visible: true } },
+      showlegend: false
+    });
+  }
+</script>
+
+</body>
+</html>
