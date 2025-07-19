@@ -1,0 +1,65 @@
+📌 Problem Statement: Zomato Restaurant Data Analysis
+With the rapid expansion of the food delivery industry and growing competition among restaurants, understanding customer preferences and service performance is critical for success. However, raw datasets from platforms like Zomato often contain inconsistencies, missing values, and unstructured information that hinder data-driven decision-making.
+
+The goal of this project is to clean, structure, and analyze a real-world Zomato restaurant dataset to uncover insights into customer behavior, service quality, pricing trends, and popular cuisines. The project aims to answer key business questions such as:
+
+Which restaurants offer the best dining and delivery experiences?
+
+How do ratings and vote counts vary across different cities?
+
+Is there a correlation between cost and customer satisfaction?
+
+What are the most popular cuisines in top-performing locations?
+
+Project: Zomato Restaurant Data Analysis Dashboard
+Tools Used: Microsoft Excel, Pivot Tables, Data Cleaning Techniques
+
+Processed and cleaned a real-world restaurant dataset containing information on over 800+ restaurants listed on Zomato.
+
+Analyzed metrics such as Dining Rating, Delivery Rating, Votes, Cost for Two, and Cuisines across multiple locations.
+
+Created interactive dashboards and pivot tables to identify top-rated restaurants, customer preferences, and city-wise trends.
+
+Derived actionable insights by comparing dine-in vs. delivery experiences using calculated averages and filters.
+
+Ensured data consistency by handling missing values, duplicates, and standardizing text formats.
+
+Let me know if you want a version tailored for a data analyst, financial analyst, or business intelligence role.
+
+Here's an alternate version tailored to different job profiles. You can choose based on your resume's target role:
+
+🔹 For a Data Analyst Role:
+Project: Zomato Restaurant Insights Dashboard
+Tools: Excel, Data Cleaning, Pivot Tables, Data Visualization
+
+Cleaned and structured raw Zomato data to remove duplicates, handle missing values, and normalize text entries.
+
+Built interactive pivot dashboards to analyze trends in Dining vs. Delivery Ratings, Vote Counts, and Popular Cuisines.
+
+Applied statistical measures and calculated averages to identify top-performing restaurants across cities.
+
+Enabled actionable decision-making through slicers and dynamic tables for business insight discovery.
+
+🔹 For a Financial Analyst Role:
+Project: Restaurant Performance & Cost Analysis Dashboard
+Tools: Excel, Pivot Tables, Statistical Analysis
+
+Conducted cost-based analysis on over 800+ restaurants to compare Average Cost for Two against User Ratings and Vote Count.
+
+Derived correlation trends between pricing strategies and customer satisfaction (Dining/Delivery Ratings).
+
+Built dashboards for city-wise performance benchmarking to assist in cost-optimization strategies.
+
+Cleaned, categorized, and transformed raw data into usable financial insights for business modeling.
+
+🔹 For a Business Intelligence Role:
+Project: Zomato BI Dashboard for Restaurant Analytics
+Tools: Excel, Pivot Charts, Slicers, Data Modeling
+
+Designed an interactive Excel BI dashboard by transforming cleaned data into performance KPIs for restaurants.
+
+Compared delivery vs. dine-in performance, analyzed customer engagement via votes, and tracked cuisine trends.
+
+Leveraged pivot charts and slicers to allow dynamic exploration of location-based service quality.
+
+Identified top cuisines, customer preferences, and potential areas for strategic improvement.
