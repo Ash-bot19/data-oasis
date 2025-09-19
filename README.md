@@ -1,4 +1,4 @@
-# ***📊 Restaurant Analytics Dashboard (Excel + VBA)***
+# ***📊 Zomato Food Analytics Dashboard (Excel + VBA)***
 
 I created multiple PivotTables to break down the dataset and replicate Zomato-style restaurant insights:
 
